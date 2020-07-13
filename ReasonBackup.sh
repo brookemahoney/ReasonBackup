@@ -1,10 +1,14 @@
 #!/bin/sh
 
 backupDirectory="$HOME/.ReasonBackups";
-pluginsDirectory="/Library/Audio/Plug-Ins";
-vstPlugin1="$pluginsDirectory/VST3/Reason Rack Plugin.vst3";
-vstPlugin2="$pluginsDirectory/VST3/Reason VST.vst3";
-auPlugin="$pluginsDirectory/Components/Reason Rack Plugin.component"
+
+libraryPluginsDirectory="/Library/Audio/Plug-Ins";
+auPlugin="$libraryPluginsDirectory/Components/Reason Rack Plugin.component";
+vstPlugin1="$libraryPluginsDirectory/VST3/Reason Rack Plugin.vst3";
+vstPlugin2="$libraryPluginsDirectory/VST3/Reason VST.vst3";
+
+aaxPluginsDirectory="/Library/Application Support/Avid/Audio/Plug-Ins";
+aaxPlugin="$aaxPluginsDirectory/Reason Rack Plugin.aaxplugin";
 
 fixPermissions() {
   if [ -d "$vstPlugin1" ]; then
@@ -15,6 +19,10 @@ fixPermissions() {
     chmod -R u+w  "$vstPlugin2"
   fi
 
+  if [ -d "$aaxPlugin" ]; then
+    chmod -R u+w  "$aaxPlugin"
+  fi
+
   if [ -d "$auPlugin" ]; then
     chmod -R u+w  "$auPlugin"
   fi
@@ -22,33 +30,47 @@ fixPermissions() {
 
 backup() {
   dateFormatted="$(date +%Y-%m-%d--%H-%M-%S)";
-  newDirectory="$backupDirectory/$dateFormatted";
+  newLibraryPluginsDirectory="$backupDirectory/$dateFormatted/Library";
+  newAAXPluginsDirectory="$backupDirectory/$dateFormatted/AAX";
 
-  mkdir -p "$newDirectory";
-  if [ ! -d "$newDirectory" ]; then
+  mkdir -p "$newLibraryPluginsDirectory";
+  if [ ! -d "$newLibraryPluginsDirectory" ]; then
     echo "Could not create backup directory.";
     return;
   fi
 
+  mkdir -p "$newAAXPluginsDirectory";
+  if [ ! -d "$newAAXPluginsDirectory" ]; then
+    echo "Could not create backup directory.";
+    return;
+  fi
+
+  if [ -d "$aaxPlugin" ]; then
+    cp -R "$aaxPlugin" "$newAAXPluginsDirectory";
+    echo "Copied $aaxPlugin to $newAAXPluginsDirectory";
+  else
+    echo "$aaxPlugin not found."
+  fi
+
+  if [ -d "$auPlugin" ]; then
+    cp -R "$auPlugin" "$newLibraryPluginsDirectory/Components";
+    echo "Copied $auPlugin to $newLibraryPluginsDirectory/Components";
+  else
+    echo "$auPlugin not found."
+  fi
+
   if [ -d "$vstPlugin1" ]; then
-    cp -R "$vstPlugin1" "$newDirectory/VST3";
-    echo "Copied $vstPlugin1 to $newDirectory/VST3";
+    cp -R "$vstPlugin1" "$newLibraryPluginsDirectory/VST3";
+    echo "Copied $vstPlugin1 to $newLibraryPluginsDirectory/VST3";
   else
     echo "$vstPlugin1 not found."
   fi
 
   if [ -d "$vstPlugin2" ]; then
-    cp -R "$vstPlugin2" "$newDirectory/VST3";
-    echo "Copied $vstPlugin2 to $newDirectory/VST3";
+    cp -R "$vstPlugin2" "$newLibraryPluginsDirectory/VST3";
+    echo "Copied $vstPlugin2 to $newLibraryPluginsDirectory/VST3";
   else
     echo "$vstPlugin2 not found."
-  fi
-
-  if [ -d "$auPlugin" ]; then
-    cp -R "$auPlugin" "$newDirectory/Components";
-    echo "Copied $auPlugin to $newDirectory/Components";
-  else
-    echo "$auPlugin not found."
   fi
 }
 
@@ -66,7 +88,8 @@ restore() {
   fi
 
   fixPermissions;
-  cp -R "$latestDirectory/" "$pluginsDirectory";
+  cp -R "$latestDirectory/Library" "$libraryPluginsDirectory";
+  cp -R "$latestDirectory/AAX" "$aaxPluginsDirectory";
   echo "Plugins restored";
 }
 
