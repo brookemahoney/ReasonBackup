@@ -30,11 +30,18 @@ fixPermissions() {
 
 backup() {
   dateFormatted="$(date +%Y-%m-%d--%H-%M-%S)";
-  newLibraryPluginsDirectory="$backupDirectory/$dateFormatted/Library";
+  newLibraryComponentsDirectory="$backupDirectory/$dateFormatted/Library/Components";
+  newLibraryVST3Directory="$backupDirectory/$dateFormatted/Library/VST3";
   newAAXPluginsDirectory="$backupDirectory/$dateFormatted/AAX";
 
-  mkdir -p "$newLibraryPluginsDirectory";
-  if [ ! -d "$newLibraryPluginsDirectory" ]; then
+  mkdir -p "$newLibraryComponentsDirectory";
+  if [ ! -d "$newLibraryComponentsDirectory" ]; then
+    echo "Could not create backup directory.";
+    return;
+  fi
+
+  mkdir -p "$newLibraryVST3Directory";
+  if [ ! -d "$newLibraryVST3Directory" ]; then
     echo "Could not create backup directory.";
     return;
   fi
@@ -53,22 +60,22 @@ backup() {
   fi
 
   if [ -d "$auPlugin" ]; then
-    cp -R "$auPlugin" "$newLibraryPluginsDirectory/Components";
-    echo "Copied $auPlugin to $newLibraryPluginsDirectory/Components";
+    cp -R "$auPlugin" "$newLibraryComponentsDirectory";
+    echo "Copied $auPlugin to $newLibraryComponentsDirectory";
   else
     echo "$auPlugin not found."
   fi
 
   if [ -d "$vstPlugin1" ]; then
-    cp -R "$vstPlugin1" "$newLibraryPluginsDirectory/VST3";
-    echo "Copied $vstPlugin1 to $newLibraryPluginsDirectory/VST3";
+    cp -R "$vstPlugin1" "$newLibraryVST3Directory";
+    echo "Copied $vstPlugin1 to $newLibraryVST3Directory";
   else
     echo "$vstPlugin1 not found."
   fi
 
   if [ -d "$vstPlugin2" ]; then
-    cp -R "$vstPlugin2" "$newLibraryPluginsDirectory/VST3";
-    echo "Copied $vstPlugin2 to $newLibraryPluginsDirectory/VST3";
+    cp -R "$vstPlugin2" "$newLibraryVST3Directory";
+    echo "Copied $vstPlugin2 to $newLibraryVST3Directory";
   else
     echo "$vstPlugin2 not found."
   fi
@@ -88,8 +95,8 @@ restore() {
   fi
 
   fixPermissions;
-  cp -R "$latestDirectory/AAX" "$aaxPluginsDirectory";
-  cp -R "$latestDirectory/Library" "$libraryPluginsDirectory";
+  cp -R "$latestDirectory/AAX/" "$aaxPluginsDirectory";
+  cp -R "$latestDirectory/Library/" "$libraryPluginsDirectory";
   echo "Plugins restored";
 }
 
