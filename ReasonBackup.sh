@@ -1,9 +1,10 @@
 #!/bin/sh
 
 backupDirectory="$HOME/.ReasonBackups";
-vstDirectory="/Library/Audio/Plug-Ins/VST3";
-vstPlugin1="$vstDirectory/Reason Rack Plugin.vst3";
-vstPlugin2="$vstDirectory/Reason VST.vst3";
+pluginsDirectory="/Library/Audio/Plug-Ins";
+vstPlugin1="$pluginsDirectory/VST3/Reason Rack Plugin.vst3";
+vstPlugin2="$pluginsDirectory/VST3/Reason VST.vst3";
+auPlugin="$pluginsDirectory/Components/Reason Rack Plugin.component"
 
 backup() {
   dateFormatted="$(date +%Y-%m-%d--%H-%M-%S)";
@@ -16,17 +17,24 @@ backup() {
   fi
 
   if [ -d "$vstPlugin1" ]; then
-    cp -R "$vstPlugin1" "$newDirectory";
-    echo "Copied $vstPlugin1 to $newDirectory";
+    cp -R "$vstPlugin1" "$newDirectory/VST3";
+    echo "Copied $vstPlugin1 to $newDirectory/VST3";
   else
     echo "$vstPlugin1 not found."
   fi
 
   if [ -d "$vstPlugin2" ]; then
-    cp -R "$vstPlugin2" "$newDirectory";
-    echo "Copied $vstPlugin2 to $newDirectory";
+    cp -R "$vstPlugin2" "$newDirectory/VST3";
+    echo "Copied $vstPlugin2 to $newDirectory/VST3";
   else
     echo "$vstPlugin2 not found."
+  fi
+
+  if [ -d "$auPlugin" ]; then
+    cp -R "$auPlugin" "$newDirectory/Components";
+    echo "Copied $auPlugin to $newDirectory/Components";
+  else
+    echo "$auPlugin not found."
   fi
 }
 
@@ -43,8 +51,8 @@ restore() {
     return;
   fi
 
-  cp -R "$latestDirectory/" "$vstDirectory";
-  echo "VST plugins restored";
+  cp -R "$latestDirectory/" "$pluginsDirectory";
+  echo "Plugins restored";
 }
 
 PS3='Backup or Restore?: '

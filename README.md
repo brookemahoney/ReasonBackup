@@ -1,6 +1,6 @@
 # Reason Backup
 
-This script will backup and restore Reason Rack Plugin VST. Backups are created in `~/.ReasonBackups`. Each time a backup is created, a new folder in `~/.ReasonBackups` is created, using the current date and time for the directory name. The restore option will restore the latest backup.
+This script will backup and restore Reason Rack Plugins (VST3 and AU). Backups are created in `~/.ReasonBackups`. Each time a backup is created, a new folder in `~/.ReasonBackups` is created, using the current date and time for the directory name. The restore option will restore the latest backup.
 
 This has been tested on MacOS.
 
