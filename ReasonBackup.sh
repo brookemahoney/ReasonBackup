@@ -11,20 +11,20 @@ aaxPluginsDirectory="/Library/Application Support/Avid/Audio/Plug-Ins";
 aaxPlugin="$aaxPluginsDirectory/Reason Rack Plugin.aaxplugin";
 
 fixPermissions() {
-  if [ -d "$vstPlugin1" ]; then
-    chmod -R u+w  "$vstPlugin1"
-  fi
-
-  if [ -d "$vstPlugin2" ]; then
-    chmod -R u+w  "$vstPlugin2"
-  fi
-
   if [ -d "$aaxPlugin" ]; then
     chmod -R u+w  "$aaxPlugin"
   fi
 
   if [ -d "$auPlugin" ]; then
     chmod -R u+w  "$auPlugin"
+  fi
+
+  if [ -d "$vstPlugin1" ]; then
+    chmod -R u+w  "$vstPlugin1"
+  fi
+
+  if [ -d "$vstPlugin2" ]; then
+    chmod -R u+w  "$vstPlugin2"
   fi
 }
 
@@ -88,8 +88,8 @@ restore() {
   fi
 
   fixPermissions;
-  cp -R "$latestDirectory/Library" "$libraryPluginsDirectory";
   cp -R "$latestDirectory/AAX" "$aaxPluginsDirectory";
+  cp -R "$latestDirectory/Library" "$libraryPluginsDirectory";
   echo "Plugins restored";
 }
 
