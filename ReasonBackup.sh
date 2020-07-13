@@ -12,19 +12,19 @@ aaxPlugin="$aaxPluginsDirectory/Reason Rack Plugin.aaxplugin";
 
 fixPermissions() {
   if [ -d "$aaxPlugin" ]; then
-    chmod -R u+w  "$aaxPlugin"
+    chmod -R ug+w  "$aaxPlugin"
   fi
 
   if [ -d "$auPlugin" ]; then
-    chmod -R u+w  "$auPlugin"
+    chmod -R ug+w  "$auPlugin"
   fi
 
   if [ -d "$vstPlugin1" ]; then
-    chmod -R u+w  "$vstPlugin1"
+    chmod -R ug+w  "$vstPlugin1"
   fi
 
   if [ -d "$vstPlugin2" ]; then
-    chmod -R u+w  "$vstPlugin2"
+    chmod -R ug+w  "$vstPlugin2"
   fi
 }
 
