@@ -6,6 +6,20 @@ vstPlugin1="$pluginsDirectory/VST3/Reason Rack Plugin.vst3";
 vstPlugin2="$pluginsDirectory/VST3/Reason VST.vst3";
 auPlugin="$pluginsDirectory/Components/Reason Rack Plugin.component"
 
+fixPermissions() {
+  if [ -d "$vstPlugin1" ]; then
+    chmod -R u+w  "$vstPlugin1"
+  fi
+
+  if [ -d "$vstPlugin2" ]; then
+    chmod -R u+w  "$vstPlugin2"
+  fi
+
+  if [ -d "$auPlugin" ]; then
+    chmod -R u+w  "$auPlugin"
+  fi
+}
+
 backup() {
   dateFormatted="$(date +%Y-%m-%d--%H-%M-%S)";
   newDirectory="$backupDirectory/$dateFormatted";
@@ -51,6 +65,7 @@ restore() {
     return;
   fi
 
+  fixPermissions;
   cp -R "$latestDirectory/" "$pluginsDirectory";
   echo "Plugins restored";
 }
