@@ -11,6 +11,10 @@ This has been tested on MacOS.
 * Create an alias by adding the following to ~/.bash_profile: `alias reasonBackup="source $HOME/ReasonBackup/ReasonBackup.sh";`
 
 
+## Updating
+
+* Pull new code: `git -C $HOME/ReasonBackup pull`
+
 ## Usage
 
 * Type `reasonBackup` in the terminal.
