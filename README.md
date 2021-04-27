@@ -7,7 +7,7 @@ This has been tested on MacOS.
 
 ## Installation
 
-* Clone this repo: `git clone git@github.com:jeffymahoney/ReasonBackup.git $HOME/ReasonBackup`
+* Clone this repo: `git clone git@github.com:brookemahoney/ReasonBackup.git $HOME/ReasonBackup`
 * Create an alias by adding the following to ~/.bash_profile: `alias reasonBackup="source $HOME/ReasonBackup/ReasonBackup.sh";`
 
 
